@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Navbar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,22 +30,34 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: const Text(
-            'ZZZZZZZZZ') // This trailing comma makes auto-formatting nicer for build methods.
-        );
+      drawer: const NavBar(),
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        title: const Text("il fait beau"),
+        backgroundColor: Colors.blueGrey,
+        elevation: 0.0,
+      ),
+      body: Container(
+          height: 2000,
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/images/rain.jpg"), fit: BoxFit.cover),
+          ),
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              Text('Paris',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold))
+            ],
+          ))),
+    );
   }
 }
