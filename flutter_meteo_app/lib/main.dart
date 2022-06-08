@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meteo_app/services/todayMeteo_services.dart';
+import 'package:flutter_meteo_app/models/todayMeteo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,22 +31,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: const Text(
-            'ZZZZZZZZZ') // This trailing comma makes auto-formatting nicer for build methods.
-        );
+        body: FutureBuilder<Weather>(
+            future: getTodoData(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: Text("chargement"));
+              } else if (snapshot.connectionState == ConnectionState.done) {
+                return ListTile(
+                  title: Text(snapshot.data!.main.toString()),
+                  subtitle: Text(snapshot.data!.description.toString()),
+                );
+              } else {
+                return const Center(child: Text("erreur survenue"));
+              }
+            }));
   }
 }
