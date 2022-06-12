@@ -4,6 +4,9 @@ import 'package:flutter_meteo_app/models/todayMeteo.dart';
 import 'package:flutter_meteo_app/models/cities.dart';
 import 'package:flutter_meteo_app/databases/cities_db.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter_meteo_app/services/dailyMeteo_services.dart';
+import 'models/dailyMeteo.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -131,5 +134,62 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ))),
     );
+    
+     /* appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Column(
+          children: [
+            
+            Card(
+      child: FutureBuilder<DailyMeteo>(
+        future: getTodoDataHourly(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: Text("chargement"));
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            return ListView.builder(
+               
+                    itemCount: snapshot.data!.daily?.length,
+                    itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(snapshot.data!.daily![index].humidity.toString()),
+              //subtitle: Text(snapshot.data!.description.toString()),
+            );
+
+              });
+          } else {
+            return const Center(child: Text("erreur survenue"));
+          }
+        },
+      ),
+      
+    )]));*/
   }
 }
+
+// class DaysMeteos extends State<MyHomePage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+        
+//         body: FutureBuilder<DailyMeteo>(
+
+//             future: getTodoDataHourly(),
+//             builder: (context, snapshot) {
+//               if (snapshot.connectionState == ConnectionState.waiting) {
+//                 return const Center(child: Text("chargement"));
+//               } else if (snapshot.connectionState == ConnectionState.done) {
+//                 return ListTile(
+//                   title: Text(snapshot.data!.daily.toString()),
+//                   //subtitle: Text(snapshot.data!.description.toString()),
+//                 );
+//               } else {
+//                 return const Center(child: Text("erreur survenue"));
+//               }
+//             }
+//         ));
+            
+        
+//   }
+// }
