@@ -87,8 +87,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               title: Text(snapshot.data![index].name),
                               trailing: OutlinedButton(
                                 onPressed: () {
-                                  DatabaseHelper.instance
-                                      .removeCities(snapshot.data![index]);
+                                  setState(() {
+                                    DatabaseHelper.instance
+                                        .removeCities(snapshot.data![index]);
+                                  });
                                 },
                                 child: const Icon(Icons.delete),
                               ),
