@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meteo_app/services/todayMeteo_services.dart';
 import 'package:flutter_meteo_app/models/todayMeteo.dart';
+import 'package:flutter_meteo_app/models/cities.dart';
+import 'package:flutter_meteo_app/databases/cities_db.dart';
+import 'package:sqflite/sqflite.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,25 +34,102 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  TextEditingController myController = TextEditingController();
+  String searchedCity = "";
+
+  @override
+  void dispose() {
+    myController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
+      drawer: Drawer(
+        backgroundColor: Colors.blueGrey,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(height: 60),
+                const Text('Villes enregistrées',
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)),
+                const SizedBox(height: 30),
+                TextField(
+                  controller: myController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Ajoutez une ville',
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      Cities city = Cities(myController.text);
+                      DatabaseHelper.instance.addCities(city);
+                    });
+                  },
+                  child: const Text('Ajouter'),
+                ),
+                FutureBuilder<List>(
+                  future: DatabaseHelper.instance.getCities(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(snapshot.data![index].name),
+                              trailing: OutlinedButton(
+                                onPressed: () {
+                                  DatabaseHelper.instance
+                                      .removeCities(snapshot.data![index]);
+                                },
+                                child: const Icon(Icons.delete),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                    return const Text('une erreur est survenue');
+                  },
+                ),
+              ],
+            ),
+          ),
         ),
-        body: FutureBuilder<Weather>(
-            future: getTodoData(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: Text("chargement"));
-              } else if (snapshot.connectionState == ConnectionState.done) {
-                return ListTile(
-                  title: Text(snapshot.data!.main.toString()),
-                  subtitle: Text(snapshot.data!.description.toString()),
-                );
-              } else {
-                return const Center(child: Text("erreur survenue"));
-              }
-            }));
+      ),
+      appBar: AppBar(
+        title: const Text("il fait beau"),
+        backgroundColor: Colors.blueGrey,
+        elevation: 0.0,
+      ),
+      body: Container(
+          height: 2000,
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/images/rain.jpg"), fit: BoxFit.cover),
+          ),
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              Text('Paris',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold))
+            ],
+          ))),
+    );
   }
 }
