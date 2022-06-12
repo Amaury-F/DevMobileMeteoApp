@@ -3,7 +3,7 @@ import 'package:flutter_meteo_app/services/todayMeteo_services.dart';
 import 'package:flutter_meteo_app/models/todayMeteo.dart';
 import 'package:flutter_meteo_app/services/dailyMeteo_services.dart';
 import 'models/dailyMeteo.dart';
-import 'package:flutter_meteo_app/services/test_service.dart';
+
 
 void main() {
   runApp(const MyApp());
