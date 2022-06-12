@@ -92,12 +92,12 @@ class Current {
     dt = json['dt'];
     sunrise = json['sunrise'];
     sunset = json['sunset'];
-    temp = json['temp'];
+    temp = double.tryParse(json['temp'].toString()) ?? 0;
     feelsLike = json['feels_like'];
     pressure = json['pressure'];
     humidity = json['humidity'];
     dewPoint = json['dew_point'];
-    uvi = json['uvi'];
+    uvi = double.tryParse(json['uvi'].toString()) ?? 0;
     clouds = json['clouds'];
     visibility = json['visibility'];
     windSpeed = json['wind_speed'];
@@ -368,7 +368,7 @@ class Temp {
   Temp({this.day, this.min, this.max, this.night, this.eve, this.morn});
 
   Temp.fromJson(Map<dynamic, dynamic> json) {
-    day = json['day'];
+    day = double.tryParse(json['day'].toString()) ?? 0;
     min = json['min'];
     max = double.tryParse(json['max'].toString()) ?? 0;
     night = json['night'];
@@ -400,7 +400,7 @@ class FeelsLike {
     day = json['day'];
     night = json['night'];
     eve = json['eve'];
-    morn = json['morn'];
+    morn = double.tryParse(json['morn'].toString()) ?? 0;
   }
 
   Map<String, dynamic> toJson() {
