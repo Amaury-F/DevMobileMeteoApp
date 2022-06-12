@@ -193,17 +193,17 @@ class Hourly {
 
   Hourly.fromJson(Map<dynamic, dynamic> json) {
     dt = json['dt'];
-    temp = json['temp'];
+    temp = double.tryParse(json['temp'].toString()) ?? 0;
     feelsLike = double.tryParse(json['feels_like'].toString()) ?? 0;
     pressure = json['pressure'];
     humidity = json['humidity'];
-    dewPoint = json['dew_point'];
+    dewPoint = double.tryParse(json['dew_point'].toString()) ?? 0;
     uvi =double.tryParse(json['uvi'].toString()) ?? 0;
     clouds = json['clouds'];
     visibility = json['visibility'];
-    windSpeed = json['wind_speed'];
+    windSpeed = double.tryParse(json['wind_speed'].toString()) ?? 0;
     windDeg = json['wind_deg'];
-    windGust = json['wind_gust'];
+    windGust = double.tryParse(json['wind_gust'].toString()) ?? 0;
     if (json['weather'] != null) {
       weather = <Weather>[];
       json['weather'].forEach((v) {
@@ -370,10 +370,10 @@ class Temp {
   Temp.fromJson(Map<dynamic, dynamic> json) {
     day = json['day'];
     min = json['min'];
-    max = json['max'];
+    max = double.tryParse(json['max'].toString()) ?? 0;
     night = json['night'];
-    eve = json['eve'];
-    morn = json['morn'];
+    eve = double.tryParse(json['eve'].toString()) ?? 0;
+    morn = double.tryParse(json['morn'].toString()) ?? 0;
   }
 
   Map<String, dynamic> toJson() {

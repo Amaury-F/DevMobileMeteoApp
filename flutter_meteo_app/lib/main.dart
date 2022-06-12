@@ -40,17 +40,22 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: FutureBuilder<DailyMeteo>(
+      body: Column(
+          children: [
+            
+            Card(
+      child: FutureBuilder<DailyMeteo>(
         future: getTodoDataHourly(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: Text("chargement"));
           } else if (snapshot.connectionState == ConnectionState.done) {
             return ListView.builder(
-                    itemCount: snapshot.data!.hourly?.length,
+               
+                    itemCount: snapshot.data!.daily?.length,
                     itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(snapshot.data!.hourly![index].humidity.toString()),
+                      title: Text(snapshot.data!.daily![index].humidity.toString()),
               //subtitle: Text(snapshot.data!.description.toString()),
             );
 
@@ -60,7 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         },
       ),
-    );
+      
+    )]));
   }
 }
 
