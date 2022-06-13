@@ -198,7 +198,7 @@ class Hourly {
     pressure = json['pressure'];
     humidity = json['humidity'];
     dewPoint = double.tryParse(json['dew_point'].toString()) ?? 0;
-    uvi =double.tryParse(json['uvi'].toString()) ?? 0;
+    uvi = double.tryParse(json['uvi'].toString()) ?? 0;
     clouds = json['clouds'];
     visibility = json['visibility'];
     windSpeed = double.tryParse(json['wind_speed'].toString()) ?? 0;
@@ -310,7 +310,7 @@ class Daily {
         : null;
     pressure = json['pressure'];
     humidity = json['humidity'];
-    dewPoint = json['dew_point'];
+    dewPoint = double.tryParse(json['drewPoint '].toString()) ?? 0;
     windSpeed = json['wind_speed'];
     windDeg = json['wind_deg'];
     windGust = json['wind_gust'];
@@ -397,7 +397,8 @@ class FeelsLike {
   FeelsLike({this.day, this.night, this.eve, this.morn});
 
   FeelsLike.fromJson(Map<dynamic, dynamic> json) {
-    day = json['day'];
+    day = double.tryParse(json['day '].toString()) ?? 0;
+    ;
     night = json['night'];
     eve = json['eve'];
     morn = double.tryParse(json['morn'].toString()) ?? 0;

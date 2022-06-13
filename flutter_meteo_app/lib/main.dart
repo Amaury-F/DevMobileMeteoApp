@@ -170,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         },
                       ),
                     ),
-                    Container(
+                    /*Container(
                       child: FutureBuilder<DailyMeteo>(
                         future: getTodoDataHourly(),
                         builder: (context, snapshot) {
@@ -185,6 +185,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           } else if (snapshot.connectionState ==
                               ConnectionState.done) {
                             return ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
                                 itemCount: snapshot.data!.daily?.length,
                                 itemBuilder: (context, index) {
                                   return ListTile(
@@ -203,7 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           }
                         },
                       ),
-                    )
+                    )*/
                   ]),
             )));
 
