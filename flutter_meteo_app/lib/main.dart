@@ -49,66 +49,82 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: Drawer(
-          backgroundColor: Colors.blueGrey,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 60),
-                  const Text('Villes enregistrées',
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white)),
-                  const SizedBox(height: 30),
-                  TextField(
-                    controller: myController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Ajoutez une ville',
+            backgroundColor: Colors.blueGrey,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 60),
+                    const Text('Villes enregistrées',
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white)),
+                    const SizedBox(height: 30),
+                    TextField(
+                      controller: myController,
+                      style: const TextStyle(color: Colors.black),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Ajoutez une ville',
+                        hintStyle: TextStyle(color: Colors.black),
+                        fillColor: Colors.white,
+                        filled: true,
+                      ),
                     ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        Cities city = Cities(myController.text);
-                        DatabaseHelper.instance.addCities(city);
-                      });
-                    },
-                    child: const Text('Ajouter'),
-                  ),
-                  FutureBuilder<List>(
-                    future: DatabaseHelper.instance.getCities(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Expanded(
-                          child: ListView.builder(
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text(snapshot.data![index].name),
-                                trailing: OutlinedButton(
-                                  onPressed: () {
-                                    DatabaseHelper.instance
-                                        .removeCities(snapshot.data![index]);
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          Cities city = Cities(myController.text);
+                          DatabaseHelper.instance.addCities(city);
+                          myController.clear();
+                        });
+                      },
+                      child: const Text('Ajouter'),
+                    ),
+                    FutureBuilder<List>(
+                      future: DatabaseHelper.instance.getCities(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Expanded(
+                            child: ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  onTap: () {
+                                    Navigator.pop(context);
                                   },
-                                  child: const Icon(Icons.delete),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      }
-                      return const Text('une erreur est survenue');
-                    },
-                  ),
-                ],
+                                  title: Text(snapshot.data![index].name,
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold)),
+                                  trailing: OutlinedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.white)),
+                                    onPressed: () {
+                                      setState(() {
+                                        DatabaseHelper.instance.removeCities(
+                                            snapshot.data![index]);
+                                      });
+                                    },
+                                    child: const Icon(Icons.delete),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        }
+                        return const Text('une erreur est survenue');
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
-        ),
+            )),
         appBar: AppBar(
           title: const Text("il fait beau"),
           backgroundColor: Colors.blueGrey,
