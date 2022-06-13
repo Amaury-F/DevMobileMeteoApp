@@ -61,9 +61,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(height: 30),
                 TextField(
                   controller: myController,
+                  style: const TextStyle(color: Colors.black),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Ajoutez une ville',
+                    hintStyle: TextStyle(color: Colors.black),
+                    fillColor: Colors.white,
+                    filled: true,
                   ),
                 ),
                 ElevatedButton(
@@ -71,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     setState(() {
                       Cities city = Cities(myController.text);
                       DatabaseHelper.instance.addCities(city);
+                      myController.clear();
                     });
                   },
                   child: const Text('Ajouter'),
@@ -84,8 +89,18 @@ class _MyHomePageState extends State<MyHomePage> {
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             return ListTile(
-                              title: Text(snapshot.data![index].name),
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              title: Text(snapshot.data![index].name,
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold)),
                               trailing: OutlinedButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white)),
                                 onPressed: () {
                                   setState(() {
                                     DatabaseHelper.instance
