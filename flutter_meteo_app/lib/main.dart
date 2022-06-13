@@ -141,11 +141,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           } else if (snapshot.connectionState ==
                               ConnectionState.done) {
                             return ListTile(
-                              title: Text(snapshot.data!.name.toString(),
+                              title: Text(snapshot.data!.weather![0].description.toString(),
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 50,
                                       fontWeight: FontWeight.bold)),
+                                      //leading: Icon(IconData(int.parse(snapshot.data!.weather![0].icon.toString())))
                               //subtitle: Text(snapshot.data!.description.toString()),
                             );
                           } else {
@@ -154,21 +155,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         },
                       ),
                     ),
-                    Container(
+                    /*Container(
                       child: FutureBuilder<DailyMeteo>(
-                        future: getTodoDataHourly(),
+                        
+                        future: getTodoDataDaily(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: Text("chargement",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 50,
-                                        fontWeight: FontWeight.bold)));
-                          } else if (snapshot.connectionState ==
                               ConnectionState.done) {
                             return ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
                                 itemCount: snapshot.data!.daily?.length,
                                 itemBuilder: (context, index) {
                                   return ListTile(
@@ -187,7 +183,35 @@ class _MyHomePageState extends State<MyHomePage> {
                           }
                         },
                       ),
-                    )
+                    ),
+                     Container(
+                      child: FutureBuilder<DailyMeteo>(
+                        future: getTodoDataDaily(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.hourly?.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    title: Text(
+                                        snapshot.data!.hourly![index].humidity
+                                            .toString(),
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 50,
+                                            fontWeight: FontWeight.bold)),
+                                    //subtitle: Text(snapshot.data!.description.toString()),
+                                  );
+                                });
+                          } else {
+                            return const Center(child: Text("erreur survenue 3"));
+                          }
+                        },
+                      ),
+                    )*/
                   ]),
             )));
 
