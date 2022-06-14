@@ -198,7 +198,7 @@ class Hourly {
     pressure = json['pressure'];
     humidity = json['humidity'];
     dewPoint = double.tryParse(json['dew_point'].toString()) ?? 0;
-    uvi =double.tryParse(json['uvi'].toString()) ?? 0;
+    uvi = double.tryParse(json['uvi'].toString()) ?? 0;
     clouds = json['clouds'];
     visibility = json['visibility'];
     windSpeed = double.tryParse(json['wind_speed'].toString()) ?? 0;
