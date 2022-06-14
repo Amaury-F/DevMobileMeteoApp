@@ -229,7 +229,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Card(
                     child: Center(
                   child: FutureBuilder<DailyMeteo>(
-                    future: getTodoDataDaily(_coord(), _coords()),
+                    future: getTodoDataDaily(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
