@@ -33,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController myController = TextEditingController();
-  String searchedCity = "";
+  String searchedCity = "London";
 
   @override
   void dispose() {
@@ -90,6 +90,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           itemBuilder: (context, index) {
                             return ListTile(
                               onTap: () {
+                                setState(() {
+                                  searchedCity = snapshot.data![index].name;
+                                });
                                 Navigator.pop(context);
                               },
                               title: Text(snapshot.data![index].name,
@@ -137,8 +140,8 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Center(
               child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              Text('Paris',
+            children: [
+              Text("$searchedCity",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 50,
