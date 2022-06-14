@@ -142,7 +142,7 @@ class Main {
       this.humidity});
 
   Main.fromJson(Map<String, dynamic> json) {
-    temp = json['temp'];
+    temp = double.tryParse(json['temp'].toString()) ?? 0;
     feelsLike = double.tryParse(json['feels_like'].toString()) ?? 0;
     tempMin = json['temp_min'];
     tempMax = json['temp_max'];

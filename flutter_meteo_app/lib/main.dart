@@ -124,67 +124,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             child: Center(
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Container(
-                      child: FutureBuilder<Meteo>(
-                        future: getTodoData(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: Text("chargement",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 50,
-                                        fontWeight: FontWeight.bold)));
-                          } else if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return ListTile(
-                              title: Text(snapshot.data!.weather![0].description.toString(),
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 50,
-                                      fontWeight: FontWeight.bold)),
-                                      //leading: Icon(IconData(int.parse(snapshot.data!.weather![0].icon.toString())))
-                              //subtitle: Text(snapshot.data!.description.toString()),
-                            );
-                          } else {
-                            return const Center(child: Text("erreur survenue"));
-                          }
-                        },
-                      ),
-                    ),
+                    _Icon(),
+                    _temperature(),
+                    _location(),
+                    _hourlyPrediction(),
+                    _weeklyPrediction(),
+
                     /*Container(
-                      child: FutureBuilder<DailyMeteo>(
-                        
-                        future: getTodoDataDaily(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                itemCount: snapshot.data!.daily?.length,
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                    title: Text(
-                                        snapshot.data!.daily![index].humidity
-                                            .toString(),
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 50,
-                                            fontWeight: FontWeight.bold)),
-                                    //subtitle: Text(snapshot.data!.description.toString()),
-                                  );
-                                });
-                          } else {
-                            return const Center(child: Text("erreur survenue"));
-                          }
-                        },
-                      ),
-                    ),
-                     Container(
                       child: FutureBuilder<DailyMeteo>(
                         future: getTodoDataDaily(),
                         builder: (context, snapshot) {
@@ -214,67 +163,202 @@ class _MyHomePageState extends State<MyHomePage> {
                     )*/
                   ]),
             )));
+  }
 
-    /* 
-     child: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-     
-     appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
-          children: [
-            
-            Card(
-      child: FutureBuilder<DailyMeteo>(
-        future: getTodoDataHourly(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: Text("chargement"));
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            return ListView.builder(
-               
-                    itemCount: snapshot.data!.daily?.length,
-                    itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(snapshot.data!.daily![index].humidity.toString()),
+  final times = ['1', '2', '3', '4', '5', '6', '7', '8'];
+  String lat = '';
+  String lon = '';
+
+  String _coord() {
+    FutureBuilder<Meteo>(
+      future: getTodoData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          lat = snapshot.data!.coord!.lat.toString();
+
+          return Center();
+        } else {
+          return const Center(child: Text("erreur survenue"));
+        }
+      },
+    );
+    return lat;
+  }
+
+  _coords() {
+    FutureBuilder<Meteo>(
+      future: getTodoData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          lon = snapshot.data!.coord!.lon.toString();
+          return Center();
+        } else {
+          return const Center(child: Text("erreur survenue"));
+        }
+      },
+    );
+    return lon;
+  }
+
+  _weeklyPrediction() {
+    return Expanded(
+        child: Container(
+      height: 100,
+      child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: times.length,
+          itemBuilder: (context, index) {
+            return Container(
+                height: 50,
+                child: Card(
+                    child: Center(
+                  child: FutureBuilder<DailyMeteo>(
+                    future: getTodoDataDaily(_coord(), _coords()),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                            child: Text(
+                          "chargement",
+                        ));
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.done) {
+                        return ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            itemCount: times.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                  height: 50,
+                                  child: Card(
+                                      child: Center(
+                                          child: Text(
+                                              '${snapshot.data!.daily![index].humidity}'))));
+                            });
+                      } else {
+                        return const Center(child: Text("erreur survenue"));
+                      }
+                    },
+                  ),
+                )));
+          }),
+    ));
+  }
+
+  _hourlyPrediction() {
+    return Container(
+      height: 100,
+      decoration: BoxDecoration(
+          border: Border(
+        top: BorderSide(color: Colors.white),
+        bottom: BorderSide(color: Colors.white),
+      )),
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: times.length,
+          itemBuilder: (context, index) {
+            return Container(
+                width: 50,
+                child: Card(child: Center(child: Text('${times[index]}'))));
+          }),
+    );
+  }
+
+  _Icon() {
+    return FutureBuilder<Meteo>(
+      future: getTodoData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+              child: Text("chargement",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold)));
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          lat = snapshot.data!.coord!.lat.toString();
+          lon = snapshot.data!.coord!.lon.toString();
+
+          return Center(
+              child: Column(children: [
+            Icon(Icons.cloud, size: 60, color: Colors.white),
+            ListTile(
+              title: Text(snapshot.data!.weather![0].description.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                  )),
+
               //subtitle: Text(snapshot.data!.description.toString()),
-            );
+            )
+          ]));
+        } else {
+          return const Center(child: Text("erreur survenue"));
+        }
+      },
+    );
+  }
 
-              });
-          } else {
-            return const Center(child: Text("erreur survenue"));
-          }
-        },
-      ),
-      
-    )]));*/
+  _temperature() {
+    return Padding(
+        padding: const EdgeInsets.only(left: 20),
+        child: Center(
+          child: Column(children: [
+            FutureBuilder<Meteo>(
+              future: getTodoData(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Center(
+                    child: ListTile(
+                        title: Text(
+                      (snapshot.data!.main!.temp! - 273.15).toStringAsFixed(2) +
+                          '°C',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 50,
+                          fontWeight: FontWeight.w100),
+                    )),
+
+                    //subtitle: Text(snapshot.data!.description.toString()),
+                  );
+                } else if (snapshot.connectionState == ConnectionState.none) {
+                  return const Center(child: Text("erreur survenue"));
+                } else {
+                  return const Center(child: Text(""));
+                }
+              },
+            )
+          ]),
+        ));
+  }
+
+  _location() {
+    return FutureBuilder<Meteo>(
+      future: getTodoData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Row(children: [
+            Icon(Icons.place, color: Colors.white),
+            SizedBox(
+              width: 5,
+            ),
+            Flexible(
+                child: ListTile(
+              title: Text(
+                snapshot.data!.name.toString() +
+                    ', ' +
+                    snapshot.data!.sys!.country.toString(),
+                style: TextStyle(color: Colors.white),
+              ),
+
+              //subtitle: Text(snapshot.data!.description.toString()),
+            ))
+          ]);
+        } else if (snapshot.connectionState == ConnectionState.none) {
+          return const Center(child: Text("erreur survenue"));
+        } else {
+          return const Center(child: Text(""));
+        }
+      },
+    );
   }
 }
-
-// class DaysMeteos extends State<MyHomePage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-        
-//         body: FutureBuilder<DailyMeteo>(
-
-//             future: getTodoDataHourly(),
-//             builder: (context, snapshot) {
-//               if (snapshot.connectionState == ConnectionState.waiting) {
-//                 return const Center(child: Text("chargement"));
-//               } else if (snapshot.connectionState == ConnectionState.done) {
-//                 return ListTile(
-//                   title: Text(snapshot.data!.daily.toString()),
-//                   //subtitle: Text(snapshot.data!.description.toString()),
-//                 );
-//               } else {
-//                 return const Center(child: Text("erreur survenue"));
-//               }
-//             }
-//         ));
-            
-        
-//   }
-// }
