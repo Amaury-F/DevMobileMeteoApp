@@ -45,8 +45,6 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             )),
         appBar: AppBar(
-          title: const Text("il fait beau"),
+          title: const Text("Insulineless Weather"),
           backgroundColor: Colors.blueGrey,
           elevation: 0.0,
         ),
@@ -153,8 +151,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     _location(),
                     _hourlyPrediction(),
                     _weeklyPrediction(),
-
-                    
                   ]),
             )));
   }
@@ -162,8 +158,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final times = ['1', '2', '3', '4', '5', '6', '7', '8'];
   String lat = '';
   String lon = '';
-
- 
 
   _weeklyPrediction() {
     return Expanded(
