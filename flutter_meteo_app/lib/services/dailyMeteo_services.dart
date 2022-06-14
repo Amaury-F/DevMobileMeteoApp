@@ -12,9 +12,9 @@ Future<DailyMeteo> getTodoDataDaily() async {
   var url = Uri.parse(
       'https://api.openweathermap.org/data/2.5/onecall?lat=2.3488&lon=48.8534&exclude={current,minutely,alerts}&appid=a378bd8fe88eb3813ce64bc773f16bf8');
   var response = await http.get(url);
-  print(url);
+  
   if (response.statusCode == 200) {
-    print(response.body);
+    
     Map jsonResponse = json.decode(response.body);
 
     DailyMeteo hourlyMeteo = DailyMeteo.fromJson(jsonResponse);
