@@ -322,7 +322,7 @@ class Daily {
     }
     clouds = json['clouds'];
     pop = double.tryParse(json['pop'].toString()) ?? 0;
-    rain = json['rain'];
+    rain = double.tryParse(json['rain'].toString()) ?? 0;
     uvi = double.tryParse(json['uvi'].toString()) ?? 0;
   }
 
@@ -369,7 +369,7 @@ class Temp {
 
   Temp.fromJson(Map<dynamic, dynamic> json) {
     day = double.tryParse(json['day'].toString()) ?? 0;
-    min = json['min'];
+    min = double.tryParse(json['min'].toString()) ?? 0;
     max = double.tryParse(json['max'].toString()) ?? 0;
     night = json['night'];
     eve = double.tryParse(json['eve'].toString()) ?? 0;

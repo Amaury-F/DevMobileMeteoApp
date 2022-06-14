@@ -37,13 +37,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController myController = TextEditingController();
-  String searchedCity = "";
+  String searchedCity = "London";
 
   @override
   void dispose() {
     myController.dispose();
     super.dispose();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               itemBuilder: (context, index) {
                                 return ListTile(
                                   onTap: () {
+                                    setState(() {
+                                      searchedCity = snapshot.data![index].name;
+                                    });
                                     Navigator.pop(context);
                                   },
                                   title: Text(snapshot.data![index].name,
@@ -149,34 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     _hourlyPrediction(),
                     _weeklyPrediction(),
 
-                    /*Container(
-                      child: FutureBuilder<DailyMeteo>(
-                        future: getTodoDataDaily(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                itemCount: snapshot.data!.hourly?.length,
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                    title: Text(
-                                        snapshot.data!.hourly![index].humidity
-                                            .toString(),
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 50,
-                                            fontWeight: FontWeight.bold)),
-                                    //subtitle: Text(snapshot.data!.description.toString()),
-                                  );
-                                });
-                          } else {
-                            return const Center(child: Text("erreur survenue 3"));
-                          }
-                        },
-                      ),
-                    )*/
+                    
                   ]),
             )));
   }
@@ -185,36 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String lat = '';
   String lon = '';
 
-  String _coord() {
-    FutureBuilder<Meteo>(
-      future: getTodoData(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          lat = snapshot.data!.coord!.lat.toString();
-
-          return Center();
-        } else {
-          return const Center(child: Text("erreur survenue"));
-        }
-      },
-    );
-    return lat;
-  }
-
-  _coords() {
-    FutureBuilder<Meteo>(
-      future: getTodoData(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          lon = snapshot.data!.coord!.lon.toString();
-          return Center();
-        } else {
-          return const Center(child: Text("erreur survenue"));
-        }
-      },
-    );
-    return lon;
-  }
+ 
 
   _weeklyPrediction() {
     return Expanded(
@@ -280,7 +229,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _Icon() {
     return FutureBuilder<Meteo>(
-      future: getTodoData(),
+      future: getTodoData(searchedCity),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -320,7 +269,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Center(
           child: Column(children: [
             FutureBuilder<Meteo>(
-              future: getTodoData(),
+              future: getTodoData(searchedCity),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Center(
@@ -349,7 +298,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _location() {
     return FutureBuilder<Meteo>(
-      future: getTodoData(),
+      future: getTodoData(searchedCity),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return Row(children: [
