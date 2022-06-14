@@ -33,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController myController = TextEditingController();
-  String searchedCity = "London";
+  String searchedCity = "Paris";
 
   @override
   void dispose() {
